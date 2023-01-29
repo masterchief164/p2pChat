@@ -1,5 +1,7 @@
 package com.example.p2pchat
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,18 +20,23 @@ import androidx.compose.ui.unit.dp
 import com.example.p2pchat.composables.Center
 import com.example.p2pchat.ui.theme.P2pChatTheme
 import com.example.p2pchat.ui.theme.fourthColor
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             P2pChatTheme {
                 val composableScope = rememberCoroutineScope()
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
+                Surface(color = MaterialTheme.colors.background) {
                     SplashView()
+                    composableScope.launch{
+                        delay(1000)
+                        startActivity(Intent(this@MainActivity, HomeActivity::class.java))
+                        finish()
+                    }
                 }
             }
         }
